@@ -5,6 +5,7 @@ package rlp
 
 import (
 	"bytes"
+
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
@@ -17,23 +18,23 @@ type Block struct {
 // PreviousBlockHash - 32 bytes
 // MerkleRoot - 32 bytes
 type BlockHeader struct {
-	BlockNumber       uint32
-	PreviousBlockHash []byte
-	MerkleRoot        []byte
-	Signature         Signature
+	RSAAccumulator []byte // uint2048
+	RSAChainProof  RSAInclusionProof
 }
 
 // Signatures may only contain one or two signatures
 type Transaction struct {
-	UnsignedContent UnsignedTransactionContent
-	Signatures []Signature
+	Signatures    []Signature
+	MaxBlockIndex uint64
+	Inputs        []Input
+	Outputs       []Output
 }
 
 // Actual content of transaction in terms of UTXO model
 type UnsignedTransactionContent struct {
-	Inputs      []TransactionInput
-	Outputs     []TransactionOutput
-	Metadata   Metadata
+	Inputs   []Input
+	Outputs  []Output
+	Metadata Metadata
 }
 
 // Represents transaction input in terms of UTXO model
@@ -47,23 +48,20 @@ type UnsignedTransactionContent struct {
 // OutputIndex - index of the output within transaction
 // AssetId     - Id of asset in terms of multi asset Plasma implementation, 20 bytes.
 // Amount      - up to 32 bytes
-type TransactionInput struct {
-	Owner       []byte
-	BlockIndex  uint32
-	TxIndex     uint32
-	OutputIndex uint8
-	AssetId     []byte
-	Amount      []byte
+type Input struct {
+	Owner      []byte
+	BlockIndex uint64
+	TxIndex    uint32
+	Amount     Range
 }
 
 // Represents transaction output in terms of UTXO model
 // Owner   - 20 bytes. Ethereum address of the owner
 // AssetId - 20 bytes. Id of asset in terms of multi asset Plasma implementation.
 // Amount  - up to 32 bytes
-type TransactionOutput struct {
-	Owner   []byte
-	AssetId []byte
-	Amount  []byte
+type Output struct {
+	Owner  []byte
+	Amount Range
 }
 
 // Signature 65 bytes long ECDSA signature encoded in RSV format
@@ -78,7 +76,6 @@ type Metadata struct {
 	MaxBlockId uint32
 }
 
-
 func EncodeToRLP(obj interface{}) ([]byte, error) {
 	b := new(bytes.Buffer)
 	err := rlp.Encode(b, obj)
@@ -89,4 +86,14 @@ func DecodeBlock(rlpEncodedBlock []byte) (Block, error) {
 	var block = Block{}
 	err := rlp.Decode(bytes.NewReader(rlpEncodedBlock), &block)
 	return block, err
+}
+
+type RSAInclusionProof struct {
+	A []byte // uint2048
+	R []byte // uint256
+}
+
+type Range struct {
+	Begin []byte // uint256
+	End   []byte // uint256
 }
