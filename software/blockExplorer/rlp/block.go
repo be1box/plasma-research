@@ -31,10 +31,10 @@ type Transaction struct {
 }
 
 // Actual content of transaction in terms of UTXO model
-type UnsignedTransactionContent struct {
-	Inputs   []Input
-	Outputs  []Output
-	Metadata Metadata
+type TransactionContent struct {
+	Inputs        []Input
+	Outputs       []Output
+	MaxBlockIndex uint64
 }
 
 // Represents transaction input in terms of UTXO model
@@ -72,10 +72,6 @@ type Signature struct {
 	V []byte
 }
 
-type Metadata struct {
-	MaxBlockId uint32
-}
-
 func EncodeToRLP(obj interface{}) ([]byte, error) {
 	b := new(bytes.Buffer)
 	err := rlp.Encode(b, obj)
@@ -96,4 +92,10 @@ type RSAInclusionProof struct {
 type Range struct {
 	Begin []byte // uint256
 	End   []byte // uint256
+}
+
+type ExitState struct {
+	Point     Input
+	Proof     RSAInclusionProof
+	TimeStamp []byte // uint256
 }
