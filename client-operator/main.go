@@ -45,6 +45,7 @@ func main() {
 		r.Use(middlewares.Connect)
 		r.Use(middlewares.ErrorHandler)
 		r.GET("/getBalance", handlers.ResponseHistory)
+		r.Static("/static", "./static")
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 		r.POST("/withdraw", handlers.ResponseHistory)
 		r.POST("/Deposit", handlers.ResponseHistory)

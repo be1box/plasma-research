@@ -1,3 +1,28 @@
+# How to start
+
+```
+if Mongo Db is on localhost:
+
+# For operator
+DB_TYPE=local TYPE=operator go run main.go
+
+# For client
+DB_TYPE=local TYPE=client go run main.go
+
+if there is a server
+
+PASSWORD_DB=
+IP=
+LOGIN_DB=
+
+# For operator
+DB_TYPE=server PASSWORD_DB=  IP= LOGIN_DB=  TYPE=operator go run main.go
+
+# For client
+DB_TYPE=server TYPE=client go run main.go
+
+```
+
 # Hello
 There are some frameworks here:
 
