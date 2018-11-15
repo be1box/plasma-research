@@ -15,7 +15,5 @@ type Asset struct {
 	Data string        `json:"data" bson:"data"`
 }
 type Tx struct {
-	Id   bson.ObjectId `json:"_id,omitempty" bson:"_id,omitempty"`
-	Data string        `json:"data" bson:"data"`
+	Data string `json:"data" bson:"data"`
 }
-

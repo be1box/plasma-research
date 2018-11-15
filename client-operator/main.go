@@ -35,7 +35,9 @@ func main() {
 		r.Use(middlewares.ErrorHandler)
 		r.GET("/getHistoryPart", handlers.ResponseHistory)
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-		r.POST("/putMyTx/:tx", handlers.PutTx)
+		r.POST("/putMyTx/:tx", handlers.SetTx)
+		r.GET("/getMyTx/:tx", handlers.GetTx)
+		r.GET("/getAllTx", handlers.GetAllTx)
 		r.Run(":8080")
 	} else if TYPE == "client" {
 		db.Connect()
