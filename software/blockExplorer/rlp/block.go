@@ -15,26 +15,28 @@ type Block struct {
 	Transactions []Transaction
 }
 
-// PreviousBlockHash - 32 bytes
 // MerkleRoot - 32 bytes
 type BlockHeader struct {
+	BlockNumber    uint32
 	RSAAccumulator []byte // uint2048
 	RSAChainProof  RSAInclusionProof
+	SumMerkleRoot  []byte
+	Signature      Signature
 }
 
 // Signatures may only contain one or two signatures
 type Transaction struct {
 	Signatures    []Signature
 	MaxBlockIndex uint64
-	Inputs        []Input
-	Outputs       []Output
+	Inputs        []TransactionInput
+	Outputs       []TransactionOutput
 }
 
 // Actual content of transaction in terms of UTXO model
-type TransactionContent struct {
-	Inputs        []Input
-	Outputs       []Output
-	MaxBlockIndex uint64
+type UnsignedTransactionContent struct {
+	Inputs   []TransactionInput
+	Outputs  []TransactionOutput
+	Metadata Metadata
 }
 
 // Represents transaction input in terms of UTXO model
@@ -48,18 +50,19 @@ type TransactionContent struct {
 // OutputIndex - index of the output within transaction
 // AssetId     - Id of asset in terms of multi asset Plasma implementation, 20 bytes.
 // Amount      - up to 32 bytes
-type Input struct {
-	Owner      []byte
-	BlockIndex uint64
-	TxIndex    uint32
-	Amount     Range
+type TransactionInput struct {
+	Owner       []byte
+	BlockIndex  uint64
+	TxIndex     uint32
+	OutputIndex uint8
+	Amount      Range
 }
 
 // Represents transaction output in terms of UTXO model
 // Owner   - 20 bytes. Ethereum address of the owner
 // AssetId - 20 bytes. Id of asset in terms of multi asset Plasma implementation.
 // Amount  - up to 32 bytes
-type Output struct {
+type TransactionOutput struct {
 	Owner  []byte
 	Amount Range
 }
@@ -84,6 +87,10 @@ func DecodeBlock(rlpEncodedBlock []byte) (Block, error) {
 	return block, err
 }
 
+type Metadata struct {
+	MaxBlockId uint64
+}
+
 type RSAInclusionProof struct {
 	A []byte // uint2048
 	R []byte // uint256
@@ -95,7 +102,7 @@ type Range struct {
 }
 
 type ExitState struct {
-	Point     Input
+	Point     TransactionInput
 	Proof     RSAInclusionProof
 	TimeStamp []byte // uint256
 }
