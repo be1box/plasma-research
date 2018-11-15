@@ -6,7 +6,7 @@ import (
 
 const (
 	// CollectionAssets holds the name of the assets collection
-	CollectionAssets = "assets"
+	CollectionExamples = "examples"
 )
 
 // Assets model
@@ -14,3 +14,8 @@ type Asset struct {
 	Id   bson.ObjectId `json:"_id,omitempty" bson:"_id,omitempty"`
 	Data string        `json:"data" bson:"data"`
 }
+type Tx struct {
+	Id   bson.ObjectId `json:"_id,omitempty" bson:"_id,omitempty"`
+	Data string        `json:"data" bson:"data"`
+}
+

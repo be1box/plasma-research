@@ -35,7 +35,7 @@ func main() {
 		r.Use(middlewares.ErrorHandler)
 		r.GET("/getHistoryPart", handlers.ResponseHistory)
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-		r.PUT("/putMyTx", handlers.ResponseHistory)
+		r.POST("/putMyTx/:tx", handlers.PutTx)
 		r.Run(":8080")
 	} else if TYPE == "client" {
 		db.Connect()
@@ -44,8 +44,8 @@ func main() {
 		r.Use(middlewares.ErrorHandler)
 		r.GET("/getBalance", handlers.ResponseHistory)
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-		r.PUT("/withdraw", handlers.ResponseHistory)
-		r.PUT("/Deposit", handlers.ResponseHistory)
+		r.POST("/withdraw", handlers.ResponseHistory)
+		r.POST("/Deposit", handlers.ResponseHistory)
 		r.Run(":3000")
 	}
 }
