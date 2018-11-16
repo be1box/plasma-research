@@ -44,7 +44,7 @@ func main() {
 		r := gin.Default()
 		r.Use(middlewares.Connect)
 		r.Use(middlewares.ErrorHandler)
-		r.GET("/getBalance", handlers.GetBalance)
+		r.GET("/getBalanceOfContract", handlers.GetBalance)
 		r.Static("/static", "./static")
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 		r.POST("/withdraw", handlers.ResponseHistory)

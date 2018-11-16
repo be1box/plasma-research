@@ -19,7 +19,7 @@ LOGIN_DB=
 DB_TYPE=server PASSWORD_DB=  IP= LOGIN_DB=  TYPE=operator go run main.go
 
 # For client
-DB_TYPE=server TYPE=client go run main.go
+DB_TYPE=server TYPE=client CONTRACT_ADDRESS=0x8e221ada68e6e666085b0d287c7ae17fe56af175  PVT_KEY=  go run main.go
 
 ```
 

@@ -81,8 +81,7 @@ func GetAllTx(c *gin.Context) {
 }
 
 func GetBalance(c *gin.Context) {
-	ether.GetTotalSupply()
 	c.JSON(http.StatusOK, gin.H{
-		"Txs": "ok",
+		"Balance": ether.GetTotalSupply(),
 	})
 }

@@ -19,7 +19,7 @@ var (
 	CONTRACT_ADDRESS = os.Getenv("CONTRACT_ADDRESS")
 )
 
-func GetTotalSupply() *big.Int {
+func GetTotalSupply() string {
 	client, err := ethclient.Dial("https://rinkeby.infura.io")
 	if err != nil {
 		log.Fatal(err)
@@ -63,7 +63,6 @@ func GetTotalSupply() *big.Int {
 	if err != nil {
 		log.Fatal(err)
 	}
-	println(t)
 
-	return t
+	return t.String()
 }
