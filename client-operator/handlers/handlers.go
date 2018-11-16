@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"../db/models"
+	"../ether"
 	"../swagger/responses"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/mgo.v2"
@@ -76,5 +77,12 @@ func GetAllTx(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"Txs": tx,
+	})
+}
+
+func GetBalance(c *gin.Context) {
+	ether.GetTotalSupply()
+	c.JSON(http.StatusOK, gin.H{
+		"Txs": "ok",
 	})
 }

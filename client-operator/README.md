@@ -23,6 +23,22 @@ DB_TYPE=server TYPE=client go run main.go
 
 ```
 
+## All ENV variables
+
+PVT_KEY
+
+CONTRACT_ADDRESS
+
+PASSWORD_DB
+
+IP
+
+LOGIN_DB
+
+DB_TYPE
+
+TYPE
+
 # Hello
 There are some frameworks here:
 
