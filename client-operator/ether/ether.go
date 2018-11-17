@@ -66,3 +66,7 @@ func GetTotalSupply() string {
 
 	return t.String()
 }
+
+func GetTxHash(tx []byte) []byte {
+	return crypto.Keccak256(tx)
+}

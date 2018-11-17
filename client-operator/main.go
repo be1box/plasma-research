@@ -1,15 +1,13 @@
 package main
 
 import (
-	"os"
-
-	"./db"
-	"./db/middlewares"
 	list "./ether/listener"
 	"./handlers"
+	"./db/middlewares"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
+	"os"
 
 	_ "./docs"
 )
@@ -36,9 +34,7 @@ func main() {
 	// @license.url https://opensource.org/licenses/MIT
 
 	if TYPE == "operator" {
-		db.Connect()
 		r := gin.Default()
-		r.Use(middlewares.Connect)
 		r.Use(middlewares.ErrorHandler)
 		r.GET("/getHistoryPart", handlers.ResponseHistory)
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -47,9 +43,7 @@ func main() {
 		r.GET("/getAllTx", handlers.GetAllTx)
 		r.Run(":8080")
 	} else if TYPE == "client" {
-		db.Connect()
 		r := gin.Default()
-		r.Use(middlewares.Connect)
 		r.Use(middlewares.ErrorHandler)
 		r.GET("/getBalanceOfContract", handlers.GetBalance)
 		r.Static("/static", "./static")

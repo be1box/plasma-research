@@ -1,15 +1,13 @@
 package handlers
 
 import (
-	"fmt"
-	"net/http"
-
-	"../db/models"
+	"../db"
 	list "../ether/listener"
+	"../ether"
 	"../swagger/responses"
+	"fmt"
 	"github.com/gin-gonic/gin"
-	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
+	"net/http"
 )
 
 type Responses struct {
@@ -35,15 +33,12 @@ func ResponseHistory(c *gin.Context) {
 // @Success 200 {array} responses.TxResponse
 // @Router /getMyTx [get]
 func GetTx(c *gin.Context) {
-	db := c.MustGet("test").(*mgo.Database)
-	query := bson.M{"data": c.Param("tx")}
-	tx := models.Tx{}
-	err := db.C(models.CollectionExamples).Find(query).One(&tx)
+	data, err := db.Tx("database").Get([]byte(c.Param("tx")))
 	if err != nil {
 		println("Mistake DB")
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"Tx": tx.Data,
+		"Tx": string(data),
 	})
 }
 
@@ -55,10 +50,10 @@ func GetTx(c *gin.Context) {
 // @Success 200 {array} responses.SuccessResponse
 // @Router /SetMyTx [post]
 func SetTx(c *gin.Context) {
-	db := c.MustGet("test").(*mgo.Database)
-	tx := models.Tx{}
-	tx.Data = c.Param("tx")
-	err := db.C(models.CollectionExamples).Insert(tx)
+	rawTransaction := []byte(c.Param("tx"))
+	txHash := ether.GetTxHash(rawTransaction)
+	err := db.Tx("database").Put(txHash, rawTransaction)
+	fmt.Print(err)
 	if err != nil {
 		println("Mistake DB")
 		c.JSON(http.StatusOK, gin.H{
@@ -68,12 +63,11 @@ func SetTx(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"Status": "Ok",
 	})
+
 }
 
 func GetAllTx(c *gin.Context) {
-	db := c.MustGet("test").(*mgo.Database)
-	tx := []models.Tx{}
-	err := db.C(models.CollectionExamples).Find(nil).All(&tx)
+	tx, err := db.Tx("database").GetAll()
 	if err != nil {
 		println("Mistake DB")
 	}
