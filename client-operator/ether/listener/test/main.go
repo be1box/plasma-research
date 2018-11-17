@@ -35,7 +35,7 @@ func Balance(c chan string) {
 		if err != nil {
 			log.Println(err)
 		}
-		balance, err := instance.BalanceOf(nil, common.HexToAddress("0xa0560e36f9d48dd82d8ed8c94a5d6b56020ed43b"))
+		balance, err := instance.BalanceOf(nil, common.HexToAddress("0xa0560e36f9d48dd82d8ed8c94a5d6b56020ed43b")) // Random address
 		if err != nil {
 			log.Println(err)
 		}

@@ -1,13 +1,15 @@
 package handlers
 
 import (
+	"fmt"
+	"net/http"
+
 	"../db/models"
-	"../ether"
+	list "../ether/listener"
 	"../swagger/responses"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"net/http"
 )
 
 type Responses struct {
@@ -81,7 +83,8 @@ func GetAllTx(c *gin.Context) {
 }
 
 func GetBalance(c *gin.Context) {
+	fmt.Println(1)
 	c.JSON(http.StatusOK, gin.H{
-		"Balance": ether.GetTotalSupply(),
+		"Balance": list.Balance,
 	})
 }

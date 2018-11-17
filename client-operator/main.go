@@ -1,13 +1,15 @@
 package main
 
 import (
+	"os"
+
 	"./db"
 	"./db/middlewares"
+	list "./ether/listener"
 	"./handlers"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
-	"os"
 
 	_ "./docs"
 )
@@ -17,6 +19,11 @@ var (
 )
 
 func main() {
+
+	// var wg sync.WaitGroup
+	// wg.Add(1)
+	go list.UpdateTokenBalance(&list.Balance)
+	// wg.Wait()
 
 	// @title Swagger History API
 	// @version 0.0.1
@@ -51,4 +58,5 @@ func main() {
 		r.POST("/Deposit", handlers.ResponseHistory)
 		r.Run(":3000")
 	}
+
 }
